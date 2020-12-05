@@ -1,6 +1,7 @@
 import { Row, AutoComplete, Button, Col } from "@geist-ui/react"
 import { useState } from "react"
 import axios from 'axios'
+import serverAPI from './config';
 
 const SearchForm = ({ addtoFavorites }) => {
     
@@ -12,7 +13,7 @@ const SearchForm = ({ addtoFavorites }) => {
       const searchHandler = async (currentValue) => {
         if (!currentValue) return setOptions([])
         setSearching(true)
-        const { data } = await axios.get(`https://ef238fb7d333.ngrok.io/movies/?q=${currentValue}`)
+        const { data } = await axios.get(`${serverAPI}/movies/?q=${currentValue}`)
         setOptions(data.map(({name, id}) => ({ label:name, value:name, id }) ))
         setSearching(false)
         

@@ -3,6 +3,7 @@ import { CssBaseline, GeistProvider, Row, Page, Card, Col, Tag, Text, Button } f
 import SearchForm from './components/SearchForm';
 import { X } from '@geist-ui/react-icons'
 import axios from 'axios'
+import serverAPI from './components/config';
 
 import './App.css';
 
@@ -82,7 +83,7 @@ const App = () => {
   const getRecommendation = async () => {
       const toSend = favourites.map(({ id }) => id)
       setLoading(true)
-      const { data } = await axios.post('https://ef238fb7d333.ngrok.io/recommend/', toSend)
+      const { data } = await axios.post(`${serverAPI}/recommend/`, toSend)
       setRecommendationData(data)
       setLoading(false)
   }
