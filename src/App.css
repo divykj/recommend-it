@@ -1,0 +1,163 @@
+.mt {
+    margin-top: 3rem !important;
+}
+
+.mx {
+    margin: 0 1rem !important;
+    position: sticky;
+}
+
+.mr {
+    margin-right: 1rem !important;
+}
+
+.navbar {
+    margin-bottom: 2rem;
+    margin-top: -1rem;
+}
+
+.navbar p {
+    font-size: 2.5rem;
+    font-weight: 600;
+    margin: 0 0rem 0 0.5rem;
+}
+
+.tag {
+    padding: 0.5rem 0.75rem !important;
+    height: 2rem !important;
+    cursor: pointer;
+}
+
+.clear-label {
+    position: absolute !important;
+    right: 3rem;
+}
+
+.movie-title-row {
+    margin-top: 2.75rem;
+    padding: 0 1rem;
+}
+
+.overflow {
+    overflow-x: scroll;
+    -ms-overflow-style: none;
+    /* IE and Edge */
+    scrollbar-width: none;
+    /* Firefox */
+}
+
+.overflow::-webkit-scrollbar {
+    display: none;
+}
+
+.movie-card-row {
+    padding: 1rem 0.5rem;
+    width: 100%;
+    /* margin-top: 3rem; */
+}
+
+.movie-card-row .col {
+    padding: 0 1rem;
+}
+
+.movie-card {
+    width: 10rem !important;
+    height: 10rem;
+    margin-right: 1.5rem !important;
+}
+
+.movie-card-title {
+    height: 5rem !important;
+}
+
+.flip-card-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transition: transform 1.4s !important;
+    transform-style: preserve-3d;
+}
+
+.movie-card:hover .flip-card-inner {
+    transform: rotateY(180deg);
+}
+
+.flip-front,
+.flip-back {
+    position: absolute;
+    top: 1rem;
+    left: 0.5rem;
+    margin: 0 0.5rem;
+    width: 80%;
+    height: 100%;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+}
+
+.flip-back {
+    transform: rotateY(180deg);
+    display: flex;
+    justify-content: center;
+}
+
+.input-container.jsx-4077551966 {
+    height: 2.5rem !important;
+}
+
+svg {
+    position: relative;
+    width: 6.75rem;
+    height: 6.75rem;
+}
+
+svg circle {
+    width: 100%;
+    height: 100%;
+    fill: none;
+    stroke: #191919;
+    stroke-width: 8;
+    stroke-linecap: round;
+    transform: translate(7px, 7px);
+    transition: all 0.2s ease-in-out;
+}
+
+svg circle:nth-child(2) {
+    stroke-dasharray: 289;
+    stroke-dashoffset: 289;
+    stroke: #00ff43;
+}
+
+.percent {
+    position: relative;
+    width: 6.75rem;
+    height: 6.75rem;
+}
+
+.percent .number {
+    position: absolute;
+    top: 0.25rem;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.box h6 {
+    display: flex;
+    justify-content: center;
+    font-size: 0.75rem !important;
+    margin-top: 0.5rem;
+    color: #777;
+}
+
+
+/* 
+.d-flex {
+    display: flex;
+}
+
+.flex-wrap {
+    flex-wrap: wrap;
+} */
