@@ -1,0 +1,13 @@
+version: "3.6"
+services:
+  mr-backend:
+    container_name: mr-backend
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - ./app:/src/app
+    ports:
+      - "80:80"
+      - "9870:9870"
+    restart: on-failure
