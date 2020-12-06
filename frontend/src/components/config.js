@@ -1,3 +1,3 @@
-const serverAPI = 'http://98bccd29f475.ngrok.io'
+const serverAPI = "http://localhost:80";
 
-export default serverAPI
+export default serverAPI;

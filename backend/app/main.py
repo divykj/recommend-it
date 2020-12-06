@@ -40,7 +40,7 @@ async def read_movies(q: str):
         10,
         filter(
             lambda movie: movie.id in movie_recommendations
-            and movie.name.lower().startswith(q.lower()),
+            and q.lower() in movie.name.lower(),
             movies,
         ),
     )

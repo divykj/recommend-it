@@ -1,59 +1,93 @@
-import { Row, AutoComplete, Button, Col } from "@geist-ui/react"
-import { useState } from "react"
-import axios from 'axios'
-import serverAPI from './config';
+import { Row, AutoComplete, Button, Col } from "@geist-ui/react";
+import { useCallback, useState } from "react";
+import axios from "axios";
+import serverAPI from "./config";
 
-const SearchForm = ({ addtoFavorites }) => {
-    
-      const [ options, setOptions ] = useState()
-      const [ formValue, setFormValue ] = useState('')
-      const [ searching, setSearching ] = useState(false)
-      const [ selected, setSelected ] = useState('')
+const SearchForm = ({ onSelected }) => {
+  const [autoCompleteState, setAutoCompleteState] = useState({
+    value: "",
+    options: [],
+    searching: false,
+  });
 
-      const searchHandler = async (currentValue) => {
-        if (!currentValue) return setOptions([])
-        setSearching(true)
-        let searchedOptions = []
-        try {
-            const { data } = await axios.get(`${serverAPI}/movies/?q=${currentValue}`)
-            const dataList = data.map(({name, id}) => ({ label:name, value:name, id }) )    
-            searchedOptions = dataList.filter(item => item.value.includes(currentValue))
-        } catch(err) {
-            console.error(err)
-        }
-        setOptions(searchedOptions)
-        setSearching(false)
-    }
+  // const handleSelect = useCallback(
+  //   (value) => {
+  //     alert(value);
+  //     const selected = autoCompleteState.options.find(
+  //       (option) => option.value === value
+  //     );
+  //     alert(selected);
+  //   },
+  //   [autoCompleteState.options]
+  // );
 
-    return (
-        <Row justify='center' gap={0.5}>
-            <Col>
-                <AutoComplete searching={searching}
-                    width="100%"
-                    options={options}
-                    placeholder="Search movies ..."
-                    onSearch={searchHandler}
-                    value={formValue} 
-                    onChange={setFormValue}
-                    onSelect={select => setSelected(select)}
-                    clearable
-                />
-            </Col>
-            <Col span={6}>
-                <Button type="secondary" ghost  className="search-btn" onClick={() => {
-                    if(options !== undefined && options.length !== 0) {
-                        if(selected === '') return
-                        addtoFavorites(options.find(({ value }) => value === selected ))
-                        setFormValue('')
-                        setSelected('')
-                        setOptions()
-                    }
-                }}>
-                    Add
-                </Button>
-            </Col>
-        </Row>
-    )
-}
+  const handleChange = useCallback(
+    async (value) => {
+      const selectedOption = autoCompleteState.options.find(
+        (option) => option.value === value
+      );
+      if (selectedOption) onSelected(selectedOption);
 
-export default SearchForm
+      if (selectedOption || !value) {
+        setAutoCompleteState((oldAutoCompleteState) => ({
+          ...oldAutoCompleteState,
+          value: "",
+          options: [],
+          searching: false,
+        }));
+        return;
+      }
+
+      setAutoCompleteState((oldAutoCompleteState) => ({
+        ...oldAutoCompleteState,
+        value,
+        searching: true,
+      }));
+
+      try {
+        const { data } = await axios.get(`${serverAPI}/movies/?q=${value}`);
+        const options = data
+          .map(({ name, id, year }) => ({
+            label: year ? `${name} (${year})` : name,
+            value: year ? `${name} (${year})` : name,
+            id,
+          }))
+          .sort((option1, option2) => {
+            const option1StartsWithValue = option1.value.startsWith(value);
+            const option2StartsWithValue = option2.value.startsWith(value);
+
+            if (option1StartsWithValue && option2StartsWithValue)
+              return option1.value.localeCompare(option2.value);
+            if (option1StartsWithValue) return -1;
+            if (option2StartsWithValue) return 1;
+
+            return option1.value.localeCompare(option2.value);
+          });
+        console.log("GOT OPTIONS", options);
+        setAutoCompleteState((oldAutoCompleteState) => ({
+          ...oldAutoCompleteState,
+          searching: false,
+          options,
+        }));
+      } catch (err) {
+        console.error(err);
+        setAutoCompleteState((oldAutoCompleteState) => ({
+          ...oldAutoCompleteState,
+          searching: false,
+        }));
+      }
+    },
+    [onSelected, autoCompleteState.options]
+  );
+
+  return (
+    <AutoComplete
+      {...autoCompleteState}
+      placeholder="Search movies..."
+      onChange={handleChange}
+      width="100%"
+    />
+  );
+};
+
+export default SearchForm;
