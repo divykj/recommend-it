@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { CssBaseline, GeistProvider, Row, Page, Card, Col, Tag, Text, Button } from '@geist-ui/react';
 import SearchForm from './components/SearchForm';
 import { X } from '@geist-ui/react-icons'
@@ -18,7 +18,7 @@ const myTheme = {
     "accents_6": "#999",
     "accents_7": "#eaeaea",
     "accents_8": "#fafafa",
-    "background": "#000",
+    "background": "#111",
     "foreground": "#fff",
     "selection": "#f81ce5",
     "secondary": "#888",
@@ -35,12 +35,35 @@ const myTheme = {
   }
 }
 
-const PercentageBox = ({ number }) =>
+const movieData = [
+  {
+    movie: {
+      id: 1,
+      name: 'Hum Tum',
+      year: 2004
+    },
+    recommendations: [
+      { movie: { id: 2, name: 'Dil Chahta Hai', year: 2001 }, score: 0.90 },
+      { movie: { id: 3, name: 'Sholay', year: 1975 }, score: 0.80 },
+      { movie: { id: 4, name: 'Jab We Met', year: 2007 }, score: 0.70 },
+      { movie: { id: 5, name: 'Gangster', year: 2006 }, score: 0.60 },
+      { movie: { id: 6, name: 'Mohabbatein', year: 2000 }, score: 0.75 },
+      { movie: { id: 7, name: 'Swarg', year: 1990 }, score: 0.85 },
+      { movie: { id: 8, name: 'Anand', year: 1971 }, score: 0.95 },
+      { movie: { id: 9, name: 'Mughal-E-Azam', year: 1960 }, score: 0.99 },
+      { movie: { id: 10, name: 'Phir Bhi Dil Hai Hindustani', year: 2000 }, score: 0.10 },
+      { movie: { id: 11, name: 'Zindagi Na Milegi Dobara', year: 2011 }, score: 0.20 },
+    ]
+  }
+]
+
+const PercentageBox = ({ number, name, year }) =>
   <div className="box">
     <div className="percent">
+      <h5>{ name }<br />({year})</h5>
       <svg>
-        <circle cx='46' cy='46' r='46'></circle>
-        <circle cx='46' cy='46' r='46' style={{ 
+        <circle cx='44' cy='44' r='44'></circle>
+        <circle cx='44' cy='44' r='44' style={{ 
           strokeDashoffset: `calc(289 - (289 * ${number}) / 100)`, 
           stroke: `${ number > 70 ? '#00ff43': number > 30 ? 'fdcc0d' : '#DE0913'}`
         }}></circle>
@@ -52,23 +75,48 @@ const PercentageBox = ({ number }) =>
     <h6>Match</h6>
   </div>
 
-const MockItem = ({ recommend: { movie: { id, name, year }, score } }) => 
-  <div className="movie-card">
-    <Card className='flip-card-inner'>
-      <div className="flip-front">
-        <h6 className="movie-card-title">{ name }</h6>
-        <p className="movie-card-year">{year}</p>
-      </div>
-      <div className="flip-back">
-        <PercentageBox number={(score * 100).toFixed(0)} />
-      </div>
-    </Card>
-  </div>
+const MockItem = ({ recommend: { movie: { id, name, year }, score } }) => {
+  const [ loading, setLoading ] = useState(false)
+  const [ moviePoster, setMoviePoster ] = useState('')
+
+  useEffect(() => {
+    const getMoviePoster = async () => {
+      setLoading(true)
+      const { data: { Poster } } = await axios.get(`http://www.omdbapi.com/?i=tt3896198&apikey=3f3336a&t=${name}&y=${year}`)
+      setMoviePoster(Poster)
+      setLoading(false)
+    }
+
+    getMoviePoster()
+  }, [ name, year ])
+
+  return (
+    <div className="movie-card">
+      <Card className='flip-card-inner'>
+        { loading ? 'Loading....' : 
+          <>
+            <div className="flip-front" style={{ backgroundImage: !loading && moviePoster !== '' && `url(${moviePoster})` }}>
+              { !moviePoster && 
+                <>
+                  <h4 className="movie-card-title">{ name }</h4>
+                  <p className="movie-card-year">{year}</p>
+                </>
+              }
+            </div>
+            <div className="flip-back">
+              <PercentageBox number={(score * 100).toFixed(0)} name={name} year={year} />
+            </div>
+          </>
+        }
+      </Card>
+    </div>
+  )
+}
 
 const App = () => {
   
   const [ favourites, setFavourites ] = useState([])
-  const [ recommendationData, setRecommendationData ] = useState(null)
+  const [ recommendationData, setRecommendationData ] = useState(movieData)
   const [ loading, setLoading ] = useState(false)
 
   

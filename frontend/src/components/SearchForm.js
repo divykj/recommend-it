@@ -13,10 +13,16 @@ const SearchForm = ({ addtoFavorites }) => {
       const searchHandler = async (currentValue) => {
         if (!currentValue) return setOptions([])
         setSearching(true)
-        const { data } = await axios.get(`${serverAPI}/movies/?q=${currentValue}`)
-        setOptions(data.map(({name, id}) => ({ label:name, value:name, id }) ))
+        let searchedOptions = []
+        try {
+            const { data } = await axios.get(`${serverAPI}/movies/?q=${currentValue}`)
+            const dataList = data.map(({name, id}) => ({ label:name, value:name, id }) )    
+            searchedOptions = dataList.filter(item => item.value.includes(currentValue))
+        } catch(err) {
+            console.error(err)
+        }
+        setOptions(searchedOptions)
         setSearching(false)
-        
     }
 
     return (
@@ -42,7 +48,9 @@ const SearchForm = ({ addtoFavorites }) => {
                         setSelected('')
                         setOptions()
                     }
-                }}>Add</Button>
+                }}>
+                    Add
+                </Button>
             </Col>
         </Row>
     )
