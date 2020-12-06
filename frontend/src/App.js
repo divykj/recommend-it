@@ -35,27 +35,27 @@ const myTheme = {
   }
 }
 
-const movieData = [
-  {
-    movie: {
-      id: 1,
-      name: 'Hum Tum',
-      year: 2004
-    },
-    recommendations: [
-      { movie: { id: 2, name: 'Dil Chahta Hai', year: 2001 }, score: 0.90 },
-      { movie: { id: 3, name: 'Sholay', year: 1975 }, score: 0.80 },
-      { movie: { id: 4, name: 'Jab We Met', year: 2007 }, score: 0.70 },
-      { movie: { id: 5, name: 'Gangster', year: 2006 }, score: 0.60 },
-      { movie: { id: 6, name: 'Mohabbatein', year: 2000 }, score: 0.75 },
-      { movie: { id: 7, name: 'Swarg', year: 1990 }, score: 0.85 },
-      { movie: { id: 8, name: 'Anand', year: 1971 }, score: 0.95 },
-      { movie: { id: 9, name: 'Mughal-E-Azam', year: 1960 }, score: 0.99 },
-      { movie: { id: 10, name: 'Phir Bhi Dil Hai Hindustani', year: 2000 }, score: 0.10 },
-      { movie: { id: 11, name: 'Zindagi Na Milegi Dobara', year: 2011 }, score: 0.20 },
-    ]
-  }
-]
+// const movieData = [
+//   {
+//     movie: {
+//       id: 1,
+//       name: 'Hum Tum',
+//       year: 2004
+//     },
+//     recommendations: [
+//       { movie: { id: 2, name: 'Dil Chahta Hai', year: 2001 }, score: 0.90 },
+//       { movie: { id: 3, name: 'Sholay', year: 1975 }, score: 0.80 },
+//       { movie: { id: 4, name: 'Jab We Met', year: 2007 }, score: 0.70 },
+//       { movie: { id: 5, name: 'Gangster', year: 2006 }, score: 0.60 },
+//       { movie: { id: 6, name: 'Mohabbatein', year: 2000 }, score: 0.75 },
+//       { movie: { id: 7, name: 'Swarg', year: 1990 }, score: 0.85 },
+//       { movie: { id: 8, name: 'Anand', year: 1971 }, score: 0.95 },
+//       { movie: { id: 9, name: 'Mughal-E-Azam', year: 1960 }, score: 0.99 },
+//       { movie: { id: 10, name: 'Phir Bhi Dil Hai Hindustani', year: 2000 }, score: 0.10 },
+//       { movie: { id: 11, name: 'Zindagi Na Milegi Dobara', year: 2011 }, score: 0.20 },
+//     ]
+//   }
+// ]
 
 const PercentageBox = ({ number, name, year }) =>
   <div className="box">
@@ -116,7 +116,7 @@ const MockItem = ({ recommend: { movie: { id, name, year }, score } }) => {
 const App = () => {
   
   const [ favourites, setFavourites ] = useState([])
-  const [ recommendationData, setRecommendationData ] = useState(movieData)
+  const [ recommendationData, setRecommendationData ] = useState()
   const [ loading, setLoading ] = useState(false)
 
   
